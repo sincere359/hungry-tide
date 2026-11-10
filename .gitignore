@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.edge-profile*/
+tools/cloudflared.exe
+tools/cloudflared.log
+*.local

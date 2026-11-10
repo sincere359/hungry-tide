@@ -7,7 +7,7 @@
 - 玩法：单地图生存、6 条鲨鱼成长、金潮、任务、Giant Crab Boss、死亡/复活
 - 技术：Vite + TypeScript + Three.js（WebGL2），无框架、无状态库、无物理引擎
 - 体积：`dist` 约 **678 KB 原始 / 176 KB gzip**（JS 658.2 KB / 170.4 KB gzip）
-- 在线游玩（临时隧道，进程在跑就有效）：**https://selections-integrating-mar-gloves.trycloudflare.com**
+- 在线游玩：**https://sincere359.github.io/hungry-tide/**（GitHub Pages，HTTPS，免登录，长期有效）
 
 ---
 
@@ -26,13 +26,17 @@ npm run build     # tsc --noEmit && vite build
 npm run preview -- --host 0.0.0.0 --port 4173
 ```
 
-### 公网访问（当前可玩：临时隧道）
+### 公网访问（长期链接，GitHub Pages）
 
-**https://selections-integrating-mar-gloves.trycloudflare.com**
+**https://sincere359.github.io/hungry-tide/**
 
-- Cloudflare Quick Tunnel → 本机 `vite preview`（4173），HTTPS，手机浏览器直接玩。
-- **仅在本机的 `preview` + `cloudflared` 两个进程存活期间有效**；重启电脑或断网后链接会变，重建方法见下方"链接失效时"。
-- 2026-11-10 复测：HTTP 200、标题命中、`index-6AM9CEm9.js` 正常加载。
+- 免费、HTTPS、**不依赖本机进程**，长期有效；源码与构建流程也在同一仓库：https://github.com/sincere359/hungry-tide
+- 推送 `main` 后由 GitHub Actions 自动构建（`npm run build -- --base=/hungry-tide/`）并发布到 `gh-pages`，配置见 `.github/workflows/deploy-pages.yml`。
+- 2026-11-10 复测：首页 200 / 5.0 KB，`assets/index-6AM9CEm9.js` 200 / 658 KB；移动视口完整闭环通过（见验收表）。
+- 国内访问 GitHub Pages 速度一般（首屏约 1–3 s），可作为日常分享链接。
+
+**备用（临时隧道）**：**https://selections-integrating-mar-gloves.trycloudflare.com**
+Cloudflare Quick Tunnel → 本机 `vite preview`（4173），仅在本机两个进程存活期间有效，重建方法见下方"链接失效时"。
 
 ### EdgeOne Pages 部署（已完成，但默认域名不可直接分享）
 
@@ -138,10 +142,10 @@ tools\cloudflared.exe tunnel --url http://localhost:4173 --no-autoupdate
 | 紧凑横屏布局 | 通过（批量测试 268 / 300 / 320 / 346 / 390px；≤460px 启用紧凑菜单/HUD；`--app-h` 跟随 `visualViewport` 适配 iOS 工具栏） | `layout-268.png`、`layout-346.png`、`layout-390.png` |
 | iOS Safari | **按用户要求不纳入本次验收（仅 Android）** | — |
 | EdgeOne Pages | 部署成功、构建产物一致；但两个默认域名在国内节点均 401（强制 `eo_token`），需自定义域名才能长期分享 | 见"EdgeOne Pages 部署" |
-| 公网链接复测 | 通过（Cloudflare 隧道首页 200 / 4.9 KB，`index-6AM9CEm9.js` 200 / 658 KB；`tools/check-domain.ps1` 可复跑） | — |
+| 公网链接复测 | 通过（GitHub Pages 首页 200 / 5.0 KB，`index-6AM9CEm9.js` 200 / 658 KB；隧道同样 200） | `tools/check-domain.ps1` 可复跑 |
 | 内存 | 10 分钟持续投喂：JS Heap 7.2–13.5 MB 波动，结束 12.2 MB，无持续增长、无异常；详见 `docs/shots/soak.txt` | `22-soak-end.png` + `soak.txt` |
-| 公网 HTTPS | 通过（Cloudflare 临时隧道；Chromium 与 Android Chrome 均可开局） | `20-public-menu.png`、`21-public-play.png`、`36-android-menu.png` |
-| 公网链接完整闭环 | **通过**（对 `https://selections-integrating-mar-gloves.trycloudflare.com` 复跑，Android UA + 844×390 横屏）：`https:` / `isSecureContext=true` → 菜单 → 开局 `playing`、音频 `running` → 刷鱼进食 167→513 分、升到 Lv.2 → 死亡面板出现 → 免费复活 `playing`、hp 58、音频仍 `running` → 控制台 0 异常 | `48-live-menu.png`、`49-live-eating.png`、`50-live-dead.png`、`51-live-revived.png`；复跑 `node tools/cdp-live-e2e.mjs` |
+| 公网 HTTPS | 通过（GitHub Pages 长期链接 + Cloudflare 临时隧道；Chromium 与 Android Chrome 均可开局） | `20-public-menu.png`、`21-public-play.png`、`36-android-menu.png` |
+| 公网链接完整闭环 | **通过**（对 `https://sincere359.github.io/hungry-tide/` 复跑，Android UA + 844×390 横屏）：`https:` / `isSecureContext=true` → 菜单 → 开局 `playing`、音频 `running` → 刷鱼进食 160→523 分、升到 Lv.2 → 死亡面板出现 → 免费复活 `playing`、hp 56、音频仍 `running` → 控制台 0 异常 | `48-live-menu.png`、`49-live-eating.png`、`50-live-dead.png`、`51-live-revived.png`；复跑 `node tools/cdp-live-e2e.mjs` |
 
 > 说明：以上为自动化冒烟验证，不等同于真机手感验收。软件渲染帧率不代表真机；真机请按上面的清单逐项确认。
 

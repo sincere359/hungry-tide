@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#062733" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Hungry Tide" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a3d4d'/%3E%3Cpath d='M8 34c10-12 26-16 40-8l8 8-8 8c-14 8-30 4-40-8z' fill='%23ffc63d'/%3E%3Ccircle cx='47' cy='31' r='2.4' fill='%23061a22'/%3E%3C/svg%3E" />
+    <title>Hungry Tide · 经典海洋生存</title>
+    <script type="module" crossorigin src="/hungry-tide/assets/index-6AM9CEm9.js"></script>
+    <link rel="stylesheet" crossorigin href="/hungry-tide/assets/index-Byd11dXn.css">
+  </head>
+  <body>
+    <canvas id="game"></canvas>
+    <div id="vignette"></div>
+
+    <div id="hud" class="hidden">
+      <div class="top">
+        <div class="hpblock">
+          <div class="nameplate">
+            <span id="sharkTag">Reef Shark · Lv.1</span>
+            <span id="depthTxt">0 m</span>
+          </div>
+          <div class="hpbar"><div id="hpFill"></div><span id="hpTxt">100</span></div>
+        </div>
+        <div class="scoreblock">
+          <div id="scoreTxt">0</div>
+          <div class="score-sub"><span id="multTxt">x2.00</span><span class="rush-label">GOLD RUSH</span></div>
+          <div class="rushbar"><div id="rushFill"></div></div>
+        </div>
+        <div class="rightblock">
+          <div class="coinchip"><i></i><span id="coinTxt">0</span></div>
+          <button id="missionsBtn" class="icon-btn">任务</button>
+          <button id="pauseBtn" class="icon-btn">❚❚</button>
+        </div>
+      </div>
+
+      <div id="bossBar" class="hidden">
+        <span id="bossLabel">GIANT CRAB · 3/3</span>
+        <div class="bossbar"><div id="bossFill"></div></div>
+      </div>
+
+      <button id="boostBtn" aria-label="冲刺"></button>
+      <div id="joystick" class="hidden"><div class="ring"></div><div id="joyKnob"></div></div>
+      <div id="tutorial" class="hidden">按住屏幕任意位置拖动 · 点按冲刺</div>
+    </div>
+
+    <div id="menu" class="screen">
+      <div class="menu-top">
+        <div class="brand-small">HUNGRY <b>TIDE</b><span>经典海洋生存</span></div>
+        <div class="wallet">
+          <div class="chip"><i class="coin"></i><b id="menuCoins">0</b></div>
+          <div class="chip"><i class="gem"></i><b id="menuGems">0</b></div>
+          <div class="chip">最高 <b id="menuBest">0</b></div>
+          <button id="menuFullscreen" class="ghost">全屏</button>
+          <button id="menuSound" class="ghost">音效 开</button>
+        </div>
+      </div>
+
+      <div class="menu-mid">
+        <div class="hero">
+          <h1>HUNGRY<br /><span>TIDE</span></h1>
+          <p>吞下一切，活到最后。单地图 · 6 鲨进化 · 20 秒金潮。</p>
+          <div class="hero-actions">
+            <button id="playBtn" class="big">下潜</button>
+            <button id="menuMissionsBtn" class="ghost">查看任务</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="rail-wrap"><div id="sharkRail" class="rail"></div></div>
+    </div>
+
+    <div id="deadScreen" class="screen overlay hidden">
+      <div class="panel dead-panel">
+        <h2>本局结束</h2>
+        <div class="dead-grid">
+          <div><span>得分</span><b id="deadScore">0</b></div>
+          <div><span>最高分</span><b id="deadBest">0</b></div>
+          <div><span>本局金币</span><b id="deadCoins">0</b></div>
+          <div><span>任务完成</span><b id="deadMissions">0</b></div>
+        </div>
+        <div class="dead-actions">
+          <button id="reviveBtn" class="big">免费复活</button>
+          <button id="deadMenuBtn" class="ghost">返回港口</button>
+        </div>
+        <p class="hint">复活保留分数与金币；返回港口会结算本局。</p>
+      </div>
+    </div>
+
+    <div id="pauseScreen" class="screen overlay hidden">
+      <div class="panel pause-panel">
+        <h2>暂停</h2>
+        <button id="resumeBtn" class="big">继续</button>
+        <button id="pauseSound" class="ghost">音效 开</button>
+        <button id="quitBtn" class="ghost">结束本局</button>
+      </div>
+    </div>
+
+    <div id="missionsPanel" class="screen overlay hidden"></div>
+
+    <div id="goldVignette"></div>
+    <div id="damageVignette"></div>
+    <div id="boostLines"></div>
+    <div id="toast" class="hidden"></div>
+
+    <div id="rotate">
+      <div class="rot-icon">↻</div>
+      <p>请横屏游玩</p>
+    </div>
+
+  </body>
+</html>
